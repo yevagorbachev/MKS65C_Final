@@ -1,8 +1,7 @@
 # Systems Level Programming Final Project
-PROJECT DUE: Friday 1/17, 8am
-PROPOSALS DUE: Thursday 1/2/20
-GitHub link:
-https://github.com/mks65/final.git
+- PROJECT DUE: Friday 1/17, 8am
+- PROPOSALS DUE: Thursday 1/2/20
+- GitHub link: https://github.com/mks65/final.git
 
 ## Group Members
 Amanda Chen, Yevgeniy Gorbachev, Bryan Lai
