@@ -1,4 +1,8 @@
 # Systems Level Programming Final Project
+PROJECT DUE: Friday 1/17, 8am
+PROPOSALS DUE: Thursday 1/2/20
+GitHub link:
+https://github.com/mks65/final.git
 
 ## Group Members
 Amanda Chen, Yevgeniy Gorbachev, Bryan Lai
@@ -53,5 +57,5 @@ Once done, will focus on helping with game functionality.
 * 01/10/19 - Chess game should work between two players on the same computer
 * 01/13/19 - Chess game should work between two players on different computers
 * 01/14/19 - Title screen, help page, game statistics, and other small features
-* 01/16/19 - Wrap up final parts of project
-* 01/17/19 - Final testing and last commits
+* 01/15/19 - Wrap up final parts of project
+* 01/16/19 - Final testing and last commits
