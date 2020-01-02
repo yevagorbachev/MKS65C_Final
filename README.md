@@ -1,8 +1,10 @@
 # Systems Level Programming Final Project
 
-## Group Members: <p> Amanda Chen, Yevgeniy Gorbachev, Bryan Lai
+## Group Members:
+Amanda Chen, Yevgeniy Gorbachev, Bryan Lai
 
-## Project Statement: <p> To create a program where two users can play chess against one another through a terminal.
+## Project Statement:
+To create a program where two users can play chess against one another through a terminal.
 
 ## User Interface:
 Once launching the program there will be a title screen that asks the user a few things:
