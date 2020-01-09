@@ -9,7 +9,9 @@
 #include <sys/types.h>
 #include <sys/sem.h>
 
-struct chessboard { char board[8][8]; char whitecastle; char blackcastle};
+struct chessboard { char board[8][8]; char whitecastle; char blackcastle;};
 
 int isValid(char m[3]);
 int movePiece(char m[3]);
+void renderBoard(struct chessboard c);
+void setupBoard(struct chessboard c);
