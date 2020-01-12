@@ -16,37 +16,31 @@ Once launching the program there will be a title screen that asks the user a few
   For example: Possibly using a spacebar to select a specific chess piece, while also using the arrow keys to move said piece. 
   Another approach would be through the use of the game prompting the user to type in specific coordinates. 
 ### Starting the Game
-  The user will be prompted to either play on the same computer or against someone on a different computer. (Essentially, networked vs same-computer games)
-  A chess board will be sent continuously through the terminal, updating each time a player makes a move. 
+  The user will be prompted to either play on the same computer or against someone on a different computer.
+  A chess board will be sent through a socket or named pipe each time a player makes a move. 
   There will also be an indicator to show whose turn it is while playing the game.
 ### Technical Design
 4 Topics:
 * Allocating memory to keep track of the board state.
-* The fact that the program requires two players to play on separate computers, means these following topics are used as well:
-  * Pipes to facilitate and show user input between the two users.
-  * Shared Memory in order to show that two users are playing in specifically one game. (Different types of shared memory for different games between people).
-  * Signals to factor in user input.
+* Writing moves to a file, to save for later
+* Option to play from two terminal sessions on the same computer, or from different computers:
+  * Networking
+  * Named pipes
 
 ## Task Delegation
 ### Amanda Chen
-In charge of implementing game mechanics and functionality.
-This includes game states, specific turns, move validity, etc.
+Implement chess
 ### Yevgeniy Gorbachev	
-In charge of networking (for two player games not on the same computer)
-Will then focus on implementing game mechanics with Amanda.
+Implement IPC
+Assist with implementing chess
 ### Bryan Lai
-In charge of rendering the board and making the graphical user interface.
-Once done, will focus on helping with game functionality. 
+Rendering board
 
 ## Data Structures and Algorithms
 ### Utilizing a 2D Array (8x8) for the board
 * Each piece is associated with a single char.
-### Structs used to differentiate between the board and game pieces
-### Implement chess itself, with its specific ruleset
-* This involves different turns for players
-* Move Validity for specific pieces
-* Castling, move diagonally, forward, backwards, etc.
-* Winning requirements.
+### Structs used to store the board and game pieces
+### Implement chess
 
 ## Timeline
 * 01/02/19 - Project approval and begin working on project
