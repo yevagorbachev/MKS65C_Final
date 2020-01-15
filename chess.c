@@ -15,41 +15,28 @@ struct chessboard clearBoard(struct chessboard c) {
 
 struct chessboard setupBoard(struct chessboard c) {
 	c = clearBoard(c);
-	//Place pieces:
-	//pawns
-	for(int pawns = 0; pawns < 8; pawns++) {
-		//white
-		c.board[1][pawns] = WPAWN;
-		//black
-		c.board[6][pawns] = BPAWN;
+	//a       b       c       d       e       f       g       h  
+	char setup[8][8] = {
+	{BROOK  ,BKNIGHT,BBISHOP,BKING  , BQUEEN,BBISHOP,BKNIGHT,BROOK,}, // 8
+	{BPAWN  , BPAWN ,BPAWN , BPAWN ,BPAWN  , BPAWN  ,BPAWN  ,BPAWN   ,}, // 7
+	{'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,}, // 6
+	{'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,}, // 5
+	{'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,}, // 4
+	{'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,'_'   ,}, // 3
+	{WPAWN  , WPAWN ,WPAWN , WPAWN ,WPAWN  , WPAWN  ,WPAWN  ,WPAWN,}, // 2
+	{WROOK  ,WKNIGHT,WBISHOP,WQUEEN  , WKING,WBISHOP,WKNIGHT,WROOK,}, // 1
+	};
+
+
+	for (int i = 7; i > -1; i--) {
+		memcpy(c.board[7-i], setup[i], 8);
 	}
-
-	//Setting up white field
-	c.board[0][0] = WROOK;
-	c.board[0][1] = WKNIGHT;
-	c.board[0][2] = WBISHOP;
-	c.board[0][3] = WQUEEN;
-	c.board[0][4] = WKING;
-	c.board[0][5] = WBISHOP;
-	c.board[0][6] = WKNIGHT;
-	c.board[0][7] = WROOK;	
-
-	//Setting up black field
-	c.board[7][0] = BROOK;
-	c.board[7][1] = BKNIGHT;
-	c.board[7][2] = BBISHOP;
-	c.board[7][3] = BQUEEN;
-	c.board[7][4] = BKING;
-	c.board[7][5] = BBISHOP;
-	c.board[7][6] = BKNIGHT;
-	c.board[7][7] = BROOK;	
-
 
 	return c;
 }
 
 void renderBoard(struct chessboard c) {
-	printf("\n Note: [!] Black is lowercase, White is uppercase");
+	printf("\n Note: [!] Black is uppercase, White is lowercase");
 	printf("\n\n    a b c d e f g h\n\n");
 	int counter = 8;
 	for(int x = 7; x > -1; x--) {
@@ -67,10 +54,9 @@ void renderBoard(struct chessboard c) {
 int execute(char * input) {
 	if(!strcmp(input, "help")) {
 		printf("\n-------------------------------\n");
-		printf("Instructions:");
-		printf("-------------------------------\n");
-		printf("Welcome to C-hess. Here are the commands you can input.\n");
-		printf("help: Brings this information up.\n");
+		printf("Commands:");
+		printf("\n-------------------------------\n");
+		printf("help: Lists the commands and inputs available.\n");
 		printf("localGame: Lets you play a game of chess locally with 2 players.\n");
 		printf("networkGame: Lets you play online with another player. More options will be provided.\n");
 		printf("exit: Exits the program.\n");
@@ -98,6 +84,7 @@ void playLocalGame() {
 }
 
 int main() {
+	printf("Welcome to C-hess, type \"help\" if you are new.\n");
 	while(1) {
 		printf("Input command: ");
 		char input[1024];
