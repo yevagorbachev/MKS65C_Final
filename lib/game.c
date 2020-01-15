@@ -1,4 +1,4 @@
-#include "game.h"
+#include "chess.h"
 
 void move(struct board * game, char player) {
     // print board, prompt move
@@ -6,7 +6,7 @@ void move(struct board * game, char player) {
     char buffer[3];
     printf("Move (%c): ", player);
     scanf("%c%c", buffer, &buffer[1]);
-
+    
     switch(player) {
         case WHITE:
             game->state[buffer[0] - 'a'][buffer[1] - '1'] = 'm';
@@ -42,22 +42,28 @@ struct board init_board() {
     struct board game;
     for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
-            game.state[i][j] = '_';
+            game.state[i][j] = '\0';
         }
     }
     return game;
 }
 
-void render_board(struct board * game) {
+void render_board(struct board * board) {
     printf("  ");
     for (int i = 0; i < 8; i++) {
         printf(" %c ", 'a' + i);
     }
     printf("\n");
-    for(int i = 0; i < 8; i++) {
-        printf("%d ", 8 - i);
-        for(int j = 0; j < 8; j++) {
-            printf(" %c ", game->state[i][j]);
+    struct coordinate current;
+    char piece;
+    for (current.rank = '8'; current.rank >= '1'; current.rank--) {
+        printf("%c ", current.rank);
+        for (current.file = 'a'; current.file <= 'h'; current.file++) {
+            if (piece = BOARD(current)) {
+                printf(" %c ", piece);
+            } else {
+                printf("   ");
+            }
         }
         printf("\n");
     }
