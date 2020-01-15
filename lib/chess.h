@@ -30,7 +30,7 @@ struct moves {
 
 
 /*
-Initializes a moves struct with everything set to 0.
+Initializes a moves struct with everything set to '\0'.
 Allocates heap memory.
 */
 struct moves * init_moves();
@@ -64,13 +64,13 @@ void pawn_moves (
 );
 /*
 Behavior identical to int pin(...)
-diagonals is an array of 4 diagonals along which to call pin()
+PRECONDITION: Piece is not a pawn, knight, or king.
+Uses the identity of the piece at `origin' to determine diagonals.
 */
 int pins (
     struct board * board, 
     struct moves * moves, 
-    struct coordinate origin,
-    int ** diagonals
+    struct coordinate origin
 );
 
 /* 

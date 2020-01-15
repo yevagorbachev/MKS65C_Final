@@ -16,6 +16,18 @@ char on_board(struct coordinate pos) {
 }
 
 void add_move(struct moves * moves, struct coordinate origin, struct coordinate move) {
+    int i = 0;
+    while (MOVES(move)[i++].file != '\0'); // go to end
+    MOVES(move)[i - 1] = origin;
+}
+
+void print_moves(struct moves * moves, struct coordinate move) {
+    int i = 0;        
+    printf("Possible coordinates to move to %c%c from:\n", CHARGS(move));
+    while (MOVES(move)[i].file != '\0') {
+        printf("\t%c%c\n", CHARGS(MOVES(move)[i]));
+        i++;
+    }
 }
 
 struct moves * init_moves() {
@@ -40,28 +52,25 @@ int pin(struct board * board, struct moves * moves, struct coordinate origin, in
     current.file = origin.file + diagonal[0];
     current.rank = origin.rank + diagonal[1];
 
-    char last_color;
-    char last_onboard;
-
-    while (((last_color = chk_color(board, current)) != own_color) && (last_onboard = on_board(current))) {
+    while ((chk_color(board, current) != own_color) && on_board(current)) {
         target = BOARD(current);
         if (target) {
             if (last_target.rank) {
-                printf("Second piece found along diagonal at %c%c: %c\n", CHARGS(current), target);
+                // printf("Second piece found along diagonal at %c%c: %c\n", CHARGS(current), target);
                 if ((target == WKING) | (target == BKING)) {
-                    printf("Second piece is king, pin piece at %c%c\n", CHARGS(last_target));
+                    // printf("Second piece is king, pin piece at %c%c\n", CHARGS(last_target));
                     PINS(last_target)[0] = diagonal[0];
                     PINS(last_target)[1] = diagonal[1];
                 }
-                printf("exiting pin checking\n");
+                // printf("exiting pin checking\n");
                 return 0;
             } 
             else {
-                printf("Piece found at %c%c: %c\n", CHARGS(current), target);
-                printf("Adding square %c%c to moves (to %c%c)\n", CHARGS(origin), CHARGS(current));
+                // printf("Piece found at %c%c: %c\n", CHARGS(current), target);
+                // printf("Adding square %c%c to moves (to %c%c)\n", CHARGS(origin), CHARGS(current));
                 add_move(moves, origin, current);
                 if ((target == WKING) | (target == BKING)) {
-                    printf("Piece is king, is in check\n");
+                    // printf("Piece is king, is in check\n");
                     return 1;
                 } 
                 else {
@@ -72,16 +81,14 @@ int pin(struct board * board, struct moves * moves, struct coordinate origin, in
         } 
         else {
             if (!last_target.rank) {
-                printf("Adding empty square %c%c to moves (to %c%c) before first piece found\n", CHARGS(origin), CHARGS(current));
+                // printf("Adding empty square %c%c to moves (to %c%c) before first piece found\n", CHARGS(origin), CHARGS(current));
                 add_move(moves, origin, current);
-            }
-            else {
             }
         }
         // advance looking position
         current.file += diagonal[0];
         current.rank += diagonal[1];
     }
-    printf("exited pin\n");
+    // printf("exited pin\n");
 
 }

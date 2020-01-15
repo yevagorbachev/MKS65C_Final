@@ -31,5 +31,13 @@ int main() {
 	render_board(&board);
 	int diagonal[] = {0, -1};
 	pin(&board, moves, coord("a7"), diagonal);
+
+	for (char i = '2'; i < '7'; i++) {
+		struct coordinate square;
+		square.file = 'a';
+		square.rank = i;
+		print_moves(moves, square);
+	}
+	
 	free(moves);
 }
