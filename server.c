@@ -33,5 +33,6 @@ int main() {
 		case WHITE: color = BLACK;
 			break;
 	}
+
 	run(path, color);
 }

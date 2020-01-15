@@ -5,14 +5,20 @@ void move(struct board * game, char player) {
     render_board(game);
     char buffer[3];
     printf("Move (%c): ", player);
-    scanf("%c%c", buffer, &buffer[1]);
+    // printf("waiting");
+    fgets(buffer, 3, stdin);
+    // printf("buffer%c",buffer[0]);
+    // scanf("%c%c", buffer, &buffer[1]);
+    // printf("read move\n");
 
     switch(player) {
         case WHITE:
             game->state[buffer[0] - 'a'][buffer[1] - '1'] = 'm';
+            // printf("server end1\n");
             break;
         case BLACK: // black to move
             game->state[buffer[0] - 'a'][buffer[1] - '1'] = 'M';
+            // printf("client end1\n");
             break;
     }
 }
@@ -25,13 +31,15 @@ void run(int path, char color) {
             while(1) {
                 move(&game, WHITE);
                 write(path, &game, sizeof(struct board));
-                read(path, &game,  sizeof(struct board));
+                read(path, &game, sizeof(struct board));
+                // printf("server end2\n");
             }
             break;
         case BLACK:
             while(read(path, &game, sizeof(struct board))) {
                 move(&game, BLACK);
                 write(path, &game, sizeof(struct board));
+                // printf("client end2\n");
             }
             break;
     }
