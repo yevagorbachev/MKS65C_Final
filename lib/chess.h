@@ -17,7 +17,7 @@
 #define BOARD(pos) board->state[pos.rank - '1'][pos.file - 'a']
 #define MOVES(pos) moves->moves[pos.rank - '1'][pos.file - 'a']
 #define PINS(pos) moves->pins[pos.rank - '1'][pos.file - 'a']
-
+#define CHARGS(pos) pos.file, pos.rank
 struct coordinate {
     char rank;
     char file;
@@ -34,7 +34,7 @@ Initializes a moves struct with everything set to 0.
 Allocates heap memory.
 */
 struct moves * init_moves();
-struct coordinate init_coord(char * coord);
+struct coordinate coord(char * coord);
 void add_move(struct moves * moves, struct coordinate origin, struct coordinate move);
 
 char chk_color(struct board * board, struct coordinate pos);

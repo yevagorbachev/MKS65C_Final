@@ -10,7 +10,7 @@ int main() {
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 6
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 5
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 4
-		{WBISHOP,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 3
+		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 3
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 2
 		{WKING  ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 1
 	};
@@ -20,24 +20,16 @@ int main() {
 	}
 
 	struct coordinate test_positions[] = {
-		init_coord("a1"),
-		init_coord("a3"),
-		init_coord("a7"),
-		init_coord("c7"),
-		init_coord("h2"),
+		coord("a1"),
+		coord("a3"),
+		coord("a7"),
+		coord("c7"),
+		coord("h2"),
 	};
 	char color;
 	struct coordinate current;
-	for (int i = 0; i < 5; i++) {
-		current = test_positions[i];
-		color = chk_color(&board, current);
-		if (color != '\0') {
-			printf("Color at %c%c: %c\n", current.file, current.rank, color);
-		} else {
-			printf("No piece at %c%c\n", current.file, current.rank);
-		}
-	}
 	render_board(&board);
-	printf("\n\n");
+	int diagonal[] = {0, -1};
+	pin(&board, moves, coord("a7"), diagonal);
 	free(moves);
 }
