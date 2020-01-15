@@ -46,6 +46,43 @@ void run(int path, char color) {
 
 }
 
+void runlocal(char * myfifo, char color) {
+    struct board game;
+    int fd;
+
+    switch(color) {
+        case WHITE:
+            game = init_board();
+            while(1) {
+                fd = open(myfifo, O_WRONLY);
+                move(&game, WHITE);
+                write(fd, &game, sizeof(struct board));
+                close(fd);
+
+                fd = open(myfifo, O_RDONLY);
+                read(fd, &game, sizeof(struct board));
+                close(fd);
+                // printf("server end2\n");
+            }
+            break;
+        case BLACK:
+            while(1) {
+                fd = open(myfifo,O_RDONLY);
+                read(fd, &game, sizeof(struct board));
+                close(fd);
+
+                move(&game, BLACK);
+
+                fd = open(myfifo,O_WRONLY);
+                write(fd, &game, sizeof(struct board));
+                close(fd);
+                // printf("client end2\n");
+            }
+            break;
+    }
+
+}
+
 struct board init_board() {
     struct board game;
     for(int i = 0; i < 8; i++) {
