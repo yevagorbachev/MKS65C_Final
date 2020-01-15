@@ -24,5 +24,5 @@ void renderBoard(struct board * c, char player);
 struct board setupBoard(struct board c);
 struct board clearBoard(struct board c);
 void run(int path, char color);
-void move(struct board * game, char player);
+void move(struct board * game, char player, int turn);
 struct board init_board();

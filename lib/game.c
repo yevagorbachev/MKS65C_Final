@@ -1,7 +1,8 @@
 #include "game.h"
 
-void move(struct board * game, char player) {
+void move(struct board * game, char player, int turn) {
     // print board, prompt move
+    printf("Turn %d: \n", turn);
     renderBoard(game,player);
     char buffer[3];
     printf("Move (%c): ", player);
@@ -25,22 +26,25 @@ void move(struct board * game, char player) {
 
 void run(int path, char color) {
     struct board game;
+    int turn = 1;
     switch(color) {
         case WHITE:
             game = init_board();
 	    game = setupBoard(game);
             while(1) {
-                move(&game, WHITE);
+                move(&game, WHITE, turn);
                 write(path, &game, sizeof(struct board));
                 read(path, &game, sizeof(struct board));
                 // printf("server end2\n");
+		turn += 1;
             }
             break;
         case BLACK:
             while(read(path, &game, sizeof(struct board))) {
-                move(&game, BLACK);
+                move(&game, BLACK, turn);
                 write(path, &game, sizeof(struct board));
                 // printf("client end2\n");
+		turn += 1;
             }
             break;
     }
@@ -85,7 +89,7 @@ struct board setupBoard(struct board c) {
 void renderBoard(struct board * c, char player) {
 	//If the char inputted is w, render board with y perspective. (vice versa)
 	if(player == 'w') {
-		printf("\n Note: [!] Black is uppercase, White is lowercase\n");
+		printf("\n\n\n Note: [!] Black is uppercase, White is lowercase\n\n");
 		int counter = 8;
 		for(int x = 7; x > -1; x--) {
 			printf("%d  ", counter);
@@ -96,11 +100,10 @@ void renderBoard(struct board * c, char player) {
 			printf("|\n");
 		}
 		printf("\n    a b c d e f g h\n\n");
-		printf("\n\n");
 
 	}
 	else if(player == 'b') {
-		printf("\n Note: [!] Black is uppercase, White is lowercase\n");
+		printf("\n\n\n Note: [!] Black is uppercase, White is lowercase\n\n");
 		int counter = 1;
 		for(int x = 0; x < 8; x++) {
 			printf("%d  ", counter);
@@ -111,7 +114,6 @@ void renderBoard(struct board * c, char player) {
 			printf("|\n");
 		}
 		printf("\n    h g f e d c b a\n\n");
-		printf("\n\n");
 	}
 }
 
