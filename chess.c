@@ -35,19 +35,36 @@ struct chessboard setupBoard(struct chessboard c) {
 	return c;
 }
 
-void renderBoard(struct chessboard c) {
-	printf("\n Note: [!] Black is uppercase, White is lowercase");
-	printf("\n\n    a b c d e f g h\n\n");
-	int counter = 8;
-	for(int x = 7; x > -1; x--) {
-		printf("%d  ", counter);
-		counter--;
-		for(int y = 7; y > -1; y--) {
-			printf("|%c",c.board[x][y]);
+void renderBoard(struct chessboard c, char player) {
+	//If the char inputted is w, render board with y perspective. (vice versa)
+	if(player == 'w') {
+		printf("\n Note: [!] Black is uppercase, White is lowercase");
+		printf("\n\n    a b c d e f g h\n\n");
+		int counter = 8;
+		for(int x = 7; x > -1; x--) {
+			printf("%d  ", counter);
+			counter--;
+			for(int y = 7; y > -1; y--) {
+				printf("|%c",c.board[x][y]);
+			}
+			printf("|\n");
 		}
-		printf("|\n");
+		printf("\n\n");
 	}
-	printf("\n\n");
+	else if(player == 'b') {
+		printf("\n Note: [!] Black is uppercase, White is lowercase");
+		printf("\n\n    h g f e d c b a\n\n");
+		int counter = 1;
+		for(int x = 0; x < 8; x++) {
+			printf("%d  ", counter);
+			counter++;
+			for(int y = 0; y < 8; y++) {
+				printf("|%c",c.board[x][y]);
+			}
+			printf("|\n");
+		}
+		printf("\n\n");
+	}
 }
 
 //Method used to deal with input.
@@ -80,7 +97,7 @@ int execute(char * input) {
 void playLocalGame() {
 	struct chessboard c;
 	c = setupBoard(c);
-	renderBoard(c);
+	renderBoard(c,'w');
 }
 
 int main() {

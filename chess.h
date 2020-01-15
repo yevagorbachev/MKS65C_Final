@@ -26,7 +26,7 @@ struct chessboard { char board[8][8]; char whitecastle; char blackcastle;};
 
 int isValid(char m[3]);
 int movePiece(char m[3]);
-void renderBoard(struct chessboard c);
+void renderBoard(struct chessboard c, char player);
 struct chessboard setupBoard(struct chessboard c);
 struct chessboard clearBoard(struct chessboard c);
 int execute(char* input);
