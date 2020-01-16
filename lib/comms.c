@@ -74,9 +74,10 @@ int client_setup(char * server) {
 
 	return sd;
 }
-int pipe_setup(char * name) {
 
-}
-int pipe_connect(char * name) {
+char * pipe_setup() {
+	char * myfifo = "l";
+	mkfifo(myfifo, 0666);
 
+	return myfifo;
 }

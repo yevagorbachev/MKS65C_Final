@@ -9,7 +9,7 @@ int game_connect(char mode, char * channel) {
 			path = server_connect(server_setup());
 			break;
 		case MODE_LOC:
-			path = pipe_setup(channel);
+			// path = pipe_setup();
 			break;
 		default:
 			printf("Invalid connection mode\n");

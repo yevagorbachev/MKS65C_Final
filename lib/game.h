@@ -9,6 +9,7 @@ struct board {
 };
 
 void run(int path, char color);
+void runlocal(char * myfifo, char color);
 void move(struct board * game, char player);
 struct board init_board();
 void render_board(struct board * state);
