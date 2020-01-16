@@ -18,8 +18,13 @@ int game_connect(char mode, char * channel) {
 	return path;
 }
 
-int main() {
-	int path = game_connect(MODE_NET, LOCALHOST);
+int main(int argc, char * argv[]) {
+	int path;
+	if (argc > 1){
+		path = game_connect(MODE_NET, argv[1]);
+	}else{
+		path = game_connect(MODE_NET, LOCALHOST);
+	}
 	char color = '\0';
 
 	char name[256];
