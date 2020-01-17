@@ -1,3 +1,4 @@
+#include <ncurses.h>
 #include "comms.h"
 
 #define WHITE 'w'
@@ -24,5 +25,7 @@ void renderBoard(struct board * c, char player);
 struct board setupBoard(struct board c);
 struct board clearBoard(struct board c);
 void run(int path, char color);
-void move(struct board * game, char player, int turn);
+void cmove(struct board * game, char player);
 struct board init_board();
+WINDOW *create_newwin(int height, int width, int starty, int startx);
+void destroy_win(WINDOW *local_win);

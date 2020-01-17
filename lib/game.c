@@ -1,8 +1,7 @@
 #include "game.h"
 
-void move(struct board * game, char player, int turn) {
+void cmove(struct board * game, char player) {
     // print board, prompt move
-    printf("Turn %d: \n", turn);
     renderBoard(game,player);
     char buffer[3];
     printf("Move (%c): ", player);
@@ -26,29 +25,62 @@ void move(struct board * game, char player, int turn) {
 
 void run(int path, char color) {
     struct board game;
-    int turn = 1;
+    //Ncurses Variables:
+    WINDOW *my_win;
+    int ch;
+    int height,width,startx,starty;
+    initscr();
+    cbreak();
+    keypad(stdscr, TRUE);
+    height = 3;
+  	width = 10;
+  	starty = (LINES - height) / 2;	/* Calculating for a center placement */
+  	startx = (COLS - width) / 2;	/* of the window		*/
+    refresh();
+    my_win = create_newwin(height,width,starty,startx);
+
     switch(color) {
         case WHITE:
             game = init_board();
 	    game = setupBoard(game);
             while(1) {
-                move(&game, WHITE, turn);
+                cmove(&game, WHITE);
                 write(path, &game, sizeof(struct board));
                 read(path, &game, sizeof(struct board));
                 // printf("server end2\n");
-		turn += 1;
             }
             break;
         case BLACK:
             while(read(path, &game, sizeof(struct board))) {
-                move(&game, BLACK, turn);
+                cmove(&game, BLACK);
                 write(path, &game, sizeof(struct board));
                 // printf("client end2\n");
-		turn += 1;
             }
             break;
     }
 
+    while((ch = getch()) != KEY_F(1))
+    	{	switch(ch)
+    		{	case KEY_LEFT:
+    				destroy_win(my_win);
+    				my_win = create_newwin(height, width, starty,--startx);
+    				break;
+    			case KEY_RIGHT:
+    				destroy_win(my_win);
+    				my_win = create_newwin(height, width, starty,++startx);
+    				break;
+    			case KEY_UP:
+    				destroy_win(my_win);
+    				my_win = create_newwin(height, width, --starty,startx);
+    				break;
+    			case KEY_DOWN:
+    				destroy_win(my_win);
+    				my_win = create_newwin(height, width, ++starty,startx);
+    				break;
+    		}
+    	}
+
+    	endwin();			/* End curses mode		  */
 }
 
 struct board clearBoard(struct board c) {
@@ -57,16 +89,16 @@ struct board clearBoard(struct board c) {
 		for(int y = 0; y < 8; y++) {
 			c.state[x][y] = '_';
 	//		printf("|%c|",c.board[x][y]);
-		}	
+		}
 	//	printf("\n");
 	}
-	
+
 	return c;
 }
 
 struct board setupBoard(struct board c) {
 	c = clearBoard(c);
-	//a       b       c       d       e       f       g       h  
+	//a       b       c       d       e       f       g       h
 	char setup[8][8] = {
 	{BROOK  ,BKNIGHT,BBISHOP,BKING  , BQUEEN,BBISHOP,BKNIGHT,BROOK,}, // 8
 	{BPAWN  , BPAWN ,BPAWN , BPAWN ,BPAWN  , BPAWN  ,BPAWN  ,BPAWN   ,}, // 7
@@ -125,4 +157,39 @@ struct board init_board() {
         }
     }
     return game;
+}
+
+
+//NCURSES (MANAGING WINDOWS)
+
+WINDOW *create_newwin(int height, int width, int starty, int startx) {
+  WINDOW *local_win;
+	local_win = newwin(height, width, starty, startx);
+	box(local_win, 0 , 0);		/* 0, 0 gives default characters
+					 * for the vertical and horizontal
+					 * lines			*/
+	wrefresh(local_win);		/* Show that box 		*/
+	return local_win;
+}
+
+void destroy_win(WINDOW *local_win)
+{
+	/* box(local_win, ' ', ' '); : This won't produce the desired
+	 * result of erasing the window. It will leave it's four corners
+	 * and so an ugly remnant of window.
+	 */
+	wborder(local_win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	/* The parameters taken are
+	 * 1. win: the window on which to operate
+	 * 2. ls: character to be used for the left side of the window
+	 * 3. rs: character to be used for the right side of the window
+	 * 4. ts: character to be used for the top side of the window
+	 * 5. bs: character to be used for the bottom side of the window
+	 * 6. tl: character to be used for the top left corner of the window
+	 * 7. tr: character to be used for the top right corner of the window
+	 * 8. bl: character to be used for the bottom left corner of the window
+	 * 9. br: character to be used for the bottom right corner of the window
+	 */
+	wrefresh(local_win);
+	delwin(local_win);
 }
