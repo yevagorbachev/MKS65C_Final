@@ -10,7 +10,7 @@ int main() {
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 6
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 5
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 4
-		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 3
+		{WBISHOP,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 3
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 2
 		{WKING  ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 1
 	};
@@ -29,15 +29,16 @@ int main() {
 	char color;
 	struct coordinate current;
 	render_board(&board);
-	int diagonal[] = {0, -1};
-	pin(&board, moves, coord("a7"), diagonal);
-
-	for (char i = '2'; i < '7'; i++) {
-		struct coordinate square;
-		square.file = 'a';
-		square.rank = i;
-		print_moves(moves, square);
-	}
+	char diagonal[] = {0, -1};
+	pin(&board, moves, coord("a7"), diagonal, 1);
+	print_moves(moves);
+	print_pins(moves);
+	// for (char i = '2'; i < '7'; i++) {
+	// 	struct coordinate square;
+	// 	square.file = 'a';
+	// 	square.rank = i;
+	// 	print_moves(moves, square);
+	// }
 	
 	free(moves);
 }

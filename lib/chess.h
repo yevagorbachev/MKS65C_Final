@@ -70,7 +70,8 @@ Uses the identity of the piece at `origin' to determine diagonals.
 int pins (
 	struct board * board, 
 	struct moves * moves, 
-	struct coordinate origin
+	struct coordinate origin,
+	char record
 );
 
 /* 
@@ -96,7 +97,7 @@ int pin(
 	struct board * board,
 	struct moves * moves,
 	struct coordinate origin,
-	int * diagonal
+	char * diagonal, char record
 );
 // pin from a single diagonal
 // sets the check flag and returns 1 if king in check
