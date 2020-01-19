@@ -18,6 +18,7 @@
 #define MOVES(pos) moves->moves[pos.rank - '1'][pos.file - 'a']
 #define PINS(pos) moves->pins[pos.rank - '1'][pos.file - 'a']
 #define CHARGS(pos) pos.file, pos.rank
+
 struct coordinate {
 	char rank;
 	char file;
@@ -29,75 +30,66 @@ struct moves {
 };
 
 
-/*
-Initializes a moves struct with everything set to '\0'.
-Allocates heap memory.
+/* PROGRAM FLOW: //////////////////////////////////////////////////////////////
+Recieve board
+Calculate OPP moves, use to pin own pieces, calculate check squares
+Check cases:
+	0: Calculate piece moves, subject to pin constraints
+	1: Calculate piece moves, subject to pin constraints then block constraints
+	2: Calculate king moves only
+On move: If not check, allow castling appropriately
+Else allow only calculated moves
+
+
 */
+
+
+// HELPER FUNCTIONS ///////////////////////////////////////////////////////////
+
 struct moves * init_moves();
 struct coordinate coord(char * coord);
 void add_move(struct moves * moves, struct coordinate origin, struct coordinate move);
-
 char chk_color(struct board * board, struct coordinate pos);
 char on_board(struct coordinate pos);
-// checks color of piece, returns 'w' or 'b'
 
-void moves (
-	struct board * board, 
-	struct moves * moves, 
-	struct coordinate origin, 
-	int ** diagonals
-	);
+// DEBUGGING FUNCTIONS ////////////////////////////////////////////////////////
+
+void print_moves(struct moves * moves);
+void print_pins(struct moves * moves);
+
+// GAME LOGIC /////////////////////////////////////////////////////////////////
+
+int pin(
+	struct board * board, struct moves * moves,
+	struct coordinate origin, char * diagonal
+);
+
+int pins (
+	struct board * board, struct moves * moves,
+	struct coordinate origin
+);
+
 void king_moves (
-	struct board * board, 
-	struct moves * moves, 
+	struct board * board,
+	struct moves * moves,
 	struct coordinate origin
 );
+
 void knight_moves(
-	struct board * board, 
-	struct moves * moves, 
+	struct board * board,
+	struct moves * moves,
 	struct coordinate origin
 );
+
 void pawn_moves (
 	struct board * board,
 	struct moves * moves,
 	struct coordinate origin
 );
-/*
-Behavior identical to int pin(...)
-PRECONDITION: Piece is not a pawn, knight, or king.
-Uses the identity of the piece at `origin' to determine diagonals.
-*/
-int pins (
-	struct board * board, 
-	struct moves * moves, 
-	struct coordinate origin,
-	char record
-);
 
-/* 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Pin the enemy pieces.
-Arguments:
-board: pointer to game board
-moves: pointer to moves struct
-origin: position from which you are pinning
-diagonal: direction in which you are pinning
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Behavior:
-if nothing interesting:
-returns 0
-if pin:
-modifies contents of moves
-returns 0
-if check:
-returns 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-int pin(
+void generate_moves (
 	struct board * board,
 	struct moves * moves,
 	struct coordinate origin,
-	char * diagonal, char record
+	int ** diagonals
 );
-// pin from a single diagonal
-// sets the check flag and returns 1 if king in check
