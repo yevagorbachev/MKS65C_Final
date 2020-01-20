@@ -171,19 +171,20 @@ int attacks(struct board * board, struct moves * moves, struct coordinate origin
 		diagonals[2][1] = 1;
 		diagonals[3][0] = 1;
 		diagonals[3][0] = -1;
-	} else { // piece is a king, knight, or pawn
-		SET_COLS(origin)
-		if (piece == WKING || piece == BKING) {
-			king_moves(board, moves, origin);
-		} else if (piece == WKNIGHT || piece == WKNIGHT) {
-			if (!PINS(origin)[0] && !PINS(origin)[1]) {
-				knight_moves(board, moves, origin);
-			}
-		} else if (piece == WPAWN || piece == BPAWN) {
-
-		}
-		return 0;
 	}
+	// else { // piece is a king, knight, or pawn
+	// 	SET_COLS(origin)
+	// 	if (piece == WKING || piece == BKING) {
+	// 		king_moves(board, moves, origin);
+	// 	} else if (piece == WKNIGHT || piece == WKNIGHT) {
+	// 		if (!PINS(origin)[0] && !PINS(origin)[1]) {
+	// 			knight_moves(board, moves, origin);
+	// 		}
+	// 	} else if (piece == WPAWN || piece == BPAWN) {
+
+	// 	}
+	// 	return 0;
+	// }
 	for (int i = 0; i < 4 && (diagonals[i][0] || diagonals[i][1]); i++) {
 		if (pinfilter(diagonals[i], PINS(origin))) {
 			pin(board, moves, origin, diagonals[i]);
@@ -209,14 +210,14 @@ void king_moves(struct board * board, struct moves * moves, struct coordinate ki
 	};
 
 	for (int i = 0; i < 8; i++) {
-		
+
 		struct coordinate new_move = king_pos;
 		new_move.file += deltas[i][0];
 		new_move.rank += deltas[i][1];
 
-		if (on_board(new_move) && 
-			get_moves_count(board, moves, new_move, opp) == 0 && 
-			chk_color(board, new_move) != own_color) 
+		if (on_board(new_move) &&
+			get_moves_count(board, moves, new_move, opp) == 0 &&
+			chk_color(board, new_move) != own_color)
 		{
 			add_move(moves, king_pos, new_move);
 		}
