@@ -53,14 +53,6 @@ char opp_color(char color) {
 			break;
 	}
 }
-
-char pinfilter(char * delta, char * pin) {
-	if (!pin[0] && !pin[1]) {
-		return 1;
-	} else {
-		return (delta[0] == pin[0] && delta[1] == pin[1]) || (delta[0] == -pin[0] && delta[1] == -pin[1]);
-	}
-}
 // DEBUGGING FUNCTIONS ////////////////////////////////////////////////////////
 
 void print_all_moves(struct moves * moves) {
@@ -91,19 +83,6 @@ void print_moves_from(struct moves * moves, struct coordinate origin) {
 	}
 }
 
-void print_pins(struct moves * moves) {
-	int i = 0;
-	struct coordinate current;
-	printf("Locations and directions of pinned pieces (ordered by rank ascending, then file ascending)\n");
-	for (current.file = 'a'; current.file <= 'h'; current.file++) {
-		for (current.rank = '1'; current.rank <= '8'; current.rank++) {
-			if (PINS(current)[0] != 0 || PINS(current)[1] != 0) {
-				printf("\tat %c%c, along (%d, %d)\n", CHARGS(current), PINS(current)[0], PINS(current)[1]);
-			}
-		}
-	}
-}
-
 // GAME LOGIC /////////////////////////////////////////////////////////////////
 
 int pin (
@@ -111,7 +90,6 @@ int pin (
 	struct coordinate origin, char * diagonal
 ) {
 	char own_color = chk_color(board, origin);
-	struct coordinate last_target = coord("\0");
 	char target = 0;
 
 	struct coordinate current;
@@ -119,28 +97,14 @@ int pin (
 	current.rank = origin.rank + diagonal[1];
 
 	while (chk_color(board, current) != own_color && on_board(current)) {
+		add_move(moves, origin, current);
 		target = BOARD(current);
-
-		if (last_target.rank && target) {
-			if (target == WKING || target == BKING) {
-				PINS(last_target)[0] = diagonal[0];
-				PINS(last_target)[1] = diagonal[1];
-			}
-			else {
-				return 0;
-			}
-		}
-		else if (!last_target.rank){
-			add_move(moves, origin, current);
-			if (target) {
-				last_target.file = current.file;
-				last_target.rank = current.rank;
-			}
+		if (target) {
+			break;
 		}
 		current.file += diagonal[0];
 		current.rank += diagonal[1];
 	}
-
 }
 
 int attacks(struct board * board, struct moves * moves, struct coordinate origin) {
@@ -186,11 +150,9 @@ int attacks(struct board * board, struct moves * moves, struct coordinate origin
 	// 	return 0;
 	// }
 	for (int i = 0; i < 4 && (diagonals[i][0] || diagonals[i][1]); i++) {
-		if (pinfilter(diagonals[i], PINS(origin))) {
-			pin(board, moves, origin, diagonals[i]);
-			char negative[] = {-diagonals[i][0], -diagonals[i][1]};
-			pin(board, moves, origin, negative);
-		}
+		pin(board, moves, origin, diagonals[i]);
+		char negative[] = {-diagonals[i][0], -diagonals[i][1]};
+		pin(board, moves, origin, negative);
 	}
 }
 
@@ -227,13 +189,10 @@ void king_moves(struct board * board, struct moves * moves, struct coordinate ki
 void pawn_moves(struct board * board, struct moves * moves, struct coordinate pawn_pos) {
 	SET_COLS(pawn_pos)
 
-
-
 }
 
 void knight_moves(struct board * board, struct moves * moves, struct coordinate knight_pos) {
 	SET_COLS(knight_pos)
-
 
 }
 

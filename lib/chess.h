@@ -16,7 +16,6 @@
 
 #define BOARD(pos) board->state[pos.rank - '1'][pos.file - 'a']
 #define MOVES(pos) moves->moves[pos.rank - '1'][pos.file - 'a']
-#define PINS(pos) moves->pins[pos.rank - '1'][pos.file - 'a']
 
 #define CHARGS(pos) pos.file, pos.rank
 
@@ -29,19 +28,14 @@ struct coordinate {
 
 struct moves {
 	struct coordinate moves[8][8][17]; // for each board spot, a list of at most 16 coordinates from which that spot can be moved to
-	char pins[8][8][2]; // for each board spot, the direction from which the piece in question is being pinned
 };
 
 
 /* PROGRAM FLOW: //////////////////////////////////////////////////////////////
 Recieve board
-Calculate OPP moves, use to pin own pieces, calculate check squares
-Check cases:
-	0: Calculate piece moves, subject to pin constraints
-	1: Calculate piece moves, subject to pin constraints then block constraints
-	2: Calculate king moves only
-On move: If not check, allow castling appropriately
-Else allow only calculated moves
+Calculate potentially legal moves
+For an input move, determine legality (king in check after)
+
 
 
 */
@@ -60,7 +54,6 @@ char opp_color(char color);
 // DEBUGGING FUNCTIONS ////////////////////////////////////////////////////////
 
 void print_all_moves(struct moves * moves);
-void print_pins(struct moves * moves);
 void print_moves_from(struct moves * moves, struct coordinate origin);
 
 // GAME LOGIC /////////////////////////////////////////////////////////////////
