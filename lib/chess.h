@@ -17,7 +17,10 @@
 #define BOARD(pos) board->state[pos.rank - '1'][pos.file - 'a']
 #define MOVES(pos) moves->moves[pos.rank - '1'][pos.file - 'a']
 #define PINS(pos) moves->pins[pos.rank - '1'][pos.file - 'a']
+
 #define CHARGS(pos) pos.file, pos.rank
+
+#define SET_COLS(pos) char own_color = chk_color(board, pos); char opp = opp_color(own_color);
 
 struct coordinate {
 	char rank;
@@ -48,14 +51,17 @@ Else allow only calculated moves
 
 struct moves * init_moves();
 struct coordinate coord(char * coord);
-void add_move(struct moves * moves, struct coordinate origin, struct coordinate move);
+void add_move(struct moves * moves, struct coordinate origin, struct coordinate destination);
 char chk_color(struct board * board, struct coordinate pos);
 char on_board(struct coordinate pos);
+int get_moves_count(struct board * board, struct moves * moves, struct coordinate destination, char color);
+char opp_color(char color);
 
 // DEBUGGING FUNCTIONS ////////////////////////////////////////////////////////
 
-void print_moves(struct moves * moves);
+void print_all_moves(struct moves * moves);
 void print_pins(struct moves * moves);
+void print_moves_from(struct moves * moves, struct coordinate origin);
 
 // GAME LOGIC /////////////////////////////////////////////////////////////////
 
@@ -64,7 +70,7 @@ int pin(
 	struct coordinate origin, char * diagonal
 );
 
-int pins (
+int attacks (
 	struct board * board, struct moves * moves,
 	struct coordinate origin
 );
@@ -90,6 +96,5 @@ void pawn_moves (
 void generate_moves (
 	struct board * board,
 	struct moves * moves,
-	struct coordinate origin,
-	int ** diagonals
+	char color
 );

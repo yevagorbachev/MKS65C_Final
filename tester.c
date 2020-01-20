@@ -10,9 +10,9 @@ int main() {
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 6
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 5
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 4
-		{WBISHOP,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 3
+		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 3
 		{'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 2
-		{WKING  ,WBISHOP,BROOK  ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 1
+		{WKING  ,'\0'   ,BROOK  ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,'\0'   ,}, // 1
 	};
 
 	for (int i = 7; i > 0; i--) {
@@ -21,9 +21,13 @@ int main() {
 	char color;
 	struct coordinate current;
 	render_board(&board);
-	pins(&board, moves, coord("a7"), 1);
-	pins(&board, moves, coord("c1"), 1);
-	print_moves(moves);
-	print_pins(moves);
+	attacks(&board, moves, coord("a7"));
+	attacks(&board, moves, coord("c1"));
+	attacks(&board, moves, coord("c7"));
+	printf("%d black pieces can move to a1\n", get_moves_count(&board, moves, coord("a1"), BLACK));
+	king_moves(&board, moves, coord("a1"));
+	print_moves_from(moves, coord("a1"));
+	// print_all_moves(moves);
+	// print_pins(moves);
 	free(moves);
 }
