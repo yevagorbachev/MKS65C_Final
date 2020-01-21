@@ -26,4 +26,5 @@ run:
 
 clean:
 	rm *.o
-	rm server client
+	rm server
+	rm client

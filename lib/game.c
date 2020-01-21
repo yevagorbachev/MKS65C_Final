@@ -54,7 +54,6 @@ void runlocal(char * myfifo, char color) {
         case WHITE:
             game = init_board();
             while(1) {
-                printf("white waiting\n");
                 fd = open(myfifo, O_WRONLY);
                 move(&game, WHITE);
                 write(fd, &game, sizeof(struct board));
@@ -68,13 +67,13 @@ void runlocal(char * myfifo, char color) {
             break;
         case BLACK:
             while(1) {
-                printf("black waiting\n");
                 fd = open(myfifo,O_RDONLY);
                 read(fd, &game, sizeof(struct board));
                 close(fd);
 
-                fd = open(myfifo,O_WRONLY);
                 move(&game, BLACK);
+
+                fd = open(myfifo,O_WRONLY);
                 write(fd, &game, sizeof(struct board));
                 close(fd);
                 // printf("client end2\n");
