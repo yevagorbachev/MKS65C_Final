@@ -6,7 +6,7 @@ Fall 2019/Winter 2020
   Amanda Chen, Yevgeniy Gorbachev, Bryan Lai
   
 ## Project Description
-  This project involves implementing a two-player game of chess in the terminal using C. 
+  A two-player game of chess in the terminal.  
   Users will be able to play locally or between two computers over a network.
   
 ## Required Libraries
@@ -20,9 +20,39 @@ Fall 2019/Winter 2020
   ```
   
 ## How to play
-  1.
-  2.
-  
+  0. Clone the project and download the required libraries
+  1. Type make in the terminal
+  2. **To play locally:**  
+      *Terminal 1*
+      ```
+      $ ./server  
+      ```
+      *Terminal 2*
+      ```
+      $ ./client
+      ```
+         
+      **To play over a network:**  
+      *Terminal 1*
+      ```
+      $ ./server <IP Address>
+      ```
+      *Terminal 2*
+      ```
+      $ ./client <IP Address>
+      ```
+  3. Take turns moving your pieces
+      ```
+      pawn = p
+      rook = r
+      knight = n
+      bishop = b
+      queen = q
+      king = k
+      ```
+      Proper notation for a move is the letter of the piece followed by the starting square, then the destination square.  
+      *Example: pe2e4 moves your pawn on e2 to e4*
+   4. The game ends when your king is in checkmate
 
 ## Known Bugs
   *
