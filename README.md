@@ -1,6 +1,5 @@
 # Chess Lite
-Systems Level Programming Final Project  
-Fall 2019/Winter 2020
+Systems Level Programming Final Project (Fall '19/Winter '20)
 
 ## Team Members (Period 10)
   Amanda Chen, Yevgeniy Gorbachev, Bryan Lai
