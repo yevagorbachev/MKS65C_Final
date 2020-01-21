@@ -4,29 +4,25 @@ else
 	CC = gcc
 endif
 
-objects = client.o server.o comms.o game.o
+objects = tester.o game.o chess.o
 
 all: $(objects)
-	$(CC) -o client client.o comms.o game.o
-	$(CC) -o server server.o comms.o game.o
+	$(CC) -o tester $(objects)
 
-client.o: client.c
-	$(CC) -c client.c
+tester.o: tester.c lib/game.c lib/game.h lib/chess.c lib/chess.h
+	$(CC) -c tester.c
 
-server.o: server.c
-	$(CC) -c server.c
-
-game.o: lib/game.c
+game.o: lib/game.c lib/game.h lib/chess.c lib/chess.h
 	$(CC) -c lib/game.c
 
-comms.o: lib/comms.c
-	$(CC) -c lib/comms.c
+chess.o: lib/chess.c lib/chess.h
+	$(CC) -c lib/chess.c
 
 leak:
 	valgrind --leak-check=yes ./program
 
 run:
-	./program
+	./tester
 
 clean:
 	rm *.o

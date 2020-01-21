@@ -5,8 +5,10 @@
 
 struct board {
     char state[8][8];
+    char check;
     char wcas, blcas;
 };
+
 
 void run(int path, char color);
 void runlocal(char * myfifo, char color);
