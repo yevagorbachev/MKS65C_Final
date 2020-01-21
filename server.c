@@ -19,14 +19,23 @@ int game_connect(char mode, char * channel) {
 }
 
 int main(int argc, char * argv[]) {
-	int path = game_connect(MODE_NET, LOCALHOST);
 	char color = '\0';
 
 	char name[256];
 	printf("Input name (or leave empty for Anonymous) for move recording: ");
 	fgets(name, 256, stdin);
 
-	read(path, &color, 1);
+	int path;
+	char * myfifo = "l";
+	if(argc > 1){
+		path = game_connect(MODE_NET, LOCALHOST);
+		read(path, &color, 1);
+	} else {
+	  mkfifo(myfifo, 0666);
+	  path = open(myfifo, O_RDONLY);
+		read(path, &color, 1);
+  }
+
 	switch(color) {
 		case BLACK: color = WHITE;
 			break;
@@ -34,5 +43,9 @@ int main(int argc, char * argv[]) {
 			break;
 	}
 
-	run(path, color);
+	if(argc > 1){
+		run(path, color);
+	}else{
+		runlocal(myfifo, color);
+	}
 }
