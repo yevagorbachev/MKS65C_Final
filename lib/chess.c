@@ -157,9 +157,7 @@ int attacks(struct board * board, struct moves * moves, struct coordinate origin
 }
 
 void king_moves(struct board * board, struct moves * moves, struct coordinate king_pos) {
-
 	SET_COLS(king_pos)
-
 	char deltas[8][2] = {
 		{-1,-1},
 		{-1,0},
@@ -172,7 +170,6 @@ void king_moves(struct board * board, struct moves * moves, struct coordinate ki
 	};
 
 	for (int i = 0; i < 8; i++) {
-
 		struct coordinate new_move = king_pos;
 		new_move.file += deltas[i][0];
 		new_move.rank += deltas[i][1];
@@ -196,7 +193,7 @@ void knight_moves(struct board * board, struct moves * moves, struct coordinate 
 
 }
 
-void generate_moves(struct board * board, struct moves * moves, char color) {
+int generate_moves(struct board * board, struct moves * moves, char color) {
 	char king;
 	struct coordinate king_pos;
 	switch(color) {
@@ -208,18 +205,18 @@ void generate_moves(struct board * board, struct moves * moves, char color) {
 			break;
 	}
 
-	// search for king position, simultaneously calculate attacks
+	// search for king position, simultaneously calculate all moves
 	struct coordinate current;
 	char opp = opp_color(color);
 	for (current.file = 'a'; current.file <= 'h'; current.file++) {
 		for (current.rank = '1'; current.rank <= '8'; current.rank++) {
 			if (BOARD(current) == king) {
 				king_pos = current;
-			} else if (chk_color(board, current) == opp) {
+			} else if (chk_color(board, current) != 0) {
 				attacks(board, moves, current);
 			}
 		}
 	}
 
-
+	return get_moves_count(board, moves, king_pos, opp);
 }

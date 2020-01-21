@@ -28,7 +28,6 @@ int main() {
 	// printf("%d black pieces can move to a1\n", get_moves_count(&board, moves, coord("a1"), BLACK));
 	king_moves(&board, moves, coord("a1"));
 	// print_moves_from(moves, coord("a1"));
-	print_pins(moves);
 	print_moves_from(moves, coord("b1"));
 	// print_all_moves(moves);
 	free(moves);

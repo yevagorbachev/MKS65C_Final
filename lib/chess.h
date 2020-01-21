@@ -33,11 +33,11 @@ struct moves {
 
 /* PROGRAM FLOW: //////////////////////////////////////////////////////////////
 Recieve board
+Calculate enemy moves for check
 Calculate potentially legal moves
+Alert if necessary
+
 For an input move, determine legality (king in check after)
-
-
-
 */
 
 
@@ -68,26 +68,7 @@ int attacks (
 	struct coordinate origin
 );
 
-void king_moves (
-	struct board * board,
-	struct moves * moves,
-	struct coordinate origin
-);
-
-void knight_moves(
-	struct board * board,
-	struct moves * moves,
-	struct coordinate origin
-);
-
-void pawn_moves (
-	struct board * board,
-	struct moves * moves,
-	struct coordinate origin
-);
-
-void generate_moves (
-	struct board * board,
-	struct moves * moves,
-	char color
-);
+void king_moves (struct board * board, struct moves * moves, struct coordinate origin);
+void knight_moves(struct board * board, struct moves * moves, struct coordinate origin);
+void pawn_moves (struct board * board, struct moves * moves, struct coordinate origin);
+int generate_moves (struct board * board, struct moves * moves, char color);
