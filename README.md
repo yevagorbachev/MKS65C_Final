@@ -20,8 +20,8 @@ Fall 2019/Winter 2020
   ```
   
 ## How to play
-  0. Clone the project and download the required libraries
-  1. Type make in the terminal
+  0. Clone the project and download the required libraries.
+  1. Type make in the terminal.
   2. **To play locally:**  
       *Terminal 1*
       ```
@@ -41,7 +41,7 @@ Fall 2019/Winter 2020
       ```
       $ ./client <IP Address>
       ```
-  3. Take turns moving your pieces
+  3. Take turns moving your pieces.
       ```
       pawn = p
       rook = r
@@ -52,7 +52,7 @@ Fall 2019/Winter 2020
       ```
       Proper notation for a move is the letter of the piece followed by the starting square, then the destination square.  
       *Example: pe2e4 moves your pawn on e2 to e4*
-   4. The game ends when your king is in checkmate
+   4. The game ends when your king is in checkmate. Have fun!
 
 ## Known Bugs
   *
