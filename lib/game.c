@@ -3,13 +3,11 @@
 void move(struct board * game, char player) {
     // print board, prompt move
     render_board(game);
-    char buffer[3];
-    printf("Move (%c): ", player);
-    // printf("waiting");
-    fgets(buffer, 3, stdin);
-    // printf("buffer%c",buffer[0]);
-    // scanf("%c%c", buffer, &buffer[1]);
-    // printf("read move\n");
+    char buffer[3] = "\0\0";;
+    while (!validate_move(game,buffer)){
+      printf("Move (%c): ", player);
+      fgets(buffer, 3, stdin);
+    }
 
     switch(player) {
         case WHITE:
@@ -54,7 +52,7 @@ void runlocal(char * myfifo, char color) {
         case WHITE:
             game = init_board();
             while(1) {
-                printf("white waiting\n");
+                //printf("white waiting\n");
                 fd = open(myfifo, O_WRONLY);
                 move(&game, WHITE);
                 write(fd, &game, sizeof(struct board));
@@ -68,7 +66,7 @@ void runlocal(char * myfifo, char color) {
             break;
         case BLACK:
             while(1) {
-                printf("black waiting\n");
+                //printf("black waiting\n");
                 fd = open(myfifo,O_RDONLY);
                 read(fd, &game, sizeof(struct board));
                 close(fd);
