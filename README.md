@@ -51,7 +51,6 @@ Systems Level Programming Final Project (Fall '19/Winter '20)
       ```
       Proper notation for a move is the letter of the piece followed by the starting square, then the destination square.  
       *Example: pe2e4 moves your pawn on e2 to e4*
-   4. The game ends when your king is in checkmate. Have fun!
 
 ## Known Bugs
   *
