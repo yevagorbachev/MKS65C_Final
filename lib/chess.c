@@ -13,10 +13,21 @@ struct coordinate coord(char * coord) {
 	return square;
 }
 
-void add_move(struct moves * moves, struct coordinate origin, struct coordinate destination) {
-	int i = 0;
-	while (MOVES(destination)[i++].file != '\0');
-	MOVES(destination)[i - 1] = origin;
+void add_move(struct board * board, struct moves * moves, struct coordinate origin, struct coordinate destination) {
+	if (on_board(destination) && chk_color(board, origin) != chk_color(board, destination)) {
+		int i = 0;
+		while (MOVES(destination)[i++].file != '\0');
+		MOVES(destination)[i - 1] = origin;
+	}
+}
+
+int find_move(struct moves * moves, struct coordinate origin, struct coordinate destination) {
+	for(int i = 0; MOVES(destination)[i].file; i++) {
+		if (MOVES(destination)[i].file == origin.file && MOVES(destination)[i].rank == origin.rank) {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 char chk_color(struct board * board, struct coordinate pos) {
@@ -96,8 +107,8 @@ int pin (
 	current.file = origin.file + diagonal[0];
 	current.rank = origin.rank + diagonal[1];
 
-	while (chk_color(board, current) != own_color && on_board(current)) {
-		add_move(moves, origin, current);
+	while (chk_color(board, current) != own_color) {
+		add_move(board, moves, origin, current);
 		target = BOARD(current);
 		if (target) {
 			break;
@@ -136,19 +147,17 @@ int attacks(struct board * board, struct moves * moves, struct coordinate origin
 		diagonals[3][0] = 1;
 		diagonals[3][0] = -1;
 	}
-	// else { // piece is a king, knight, or pawn
-	// 	SET_COLS(origin)
-	// 	if (piece == WKING || piece == BKING) {
-	// 		king_moves(board, moves, origin);
-	// 	} else if (piece == WKNIGHT || piece == WKNIGHT) {
-	// 		if (!PINS(origin)[0] && !PINS(origin)[1]) {
-	// 			knight_moves(board, moves, origin);
-	// 		}
-	// 	} else if (piece == WPAWN || piece == BPAWN) {
-
-	// 	}
-	// 	return 0;
-	// }
+	else { // piece is a king, knight, or pawn
+		SET_COLS(origin)
+		if (piece == WKING || piece == BKING) {
+			king_moves(board, moves, origin);
+		} else if (piece == WKNIGHT || piece == WKNIGHT) {
+			knight_moves(board, moves, origin);
+		} else if (piece == WPAWN || piece == BPAWN) {
+			pawn_moves(board, moves, origin);
+		}
+		return 0;
+	}
 	for (int i = 0; i < 4 && (diagonals[i][0] || diagonals[i][1]); i++) {
 		pin(board, moves, origin, diagonals[i]);
 		char negative[] = {-diagonals[i][0], -diagonals[i][1]};
@@ -178,7 +187,7 @@ void king_moves(struct board * board, struct moves * moves, struct coordinate ki
 			get_moves_count(board, moves, new_move, opp) == 0 &&
 			chk_color(board, new_move) != own_color)
 		{
-			add_move(moves, king_pos, new_move);
+			add_move(board, moves, king_pos, new_move);
 		}
 	}
 }
@@ -192,62 +201,62 @@ void pawn_moves(struct board * board, struct moves * moves, struct coordinate pa
 		{1,1},
 		{-1,1}
 	};
-	struct coordinate current;
+	struct coordinate new_move;
 	if (own_color == WHITE) {
-		current = pawn_pos;
-		current.file += deltas[0][0];
-		current.rank += deltas[0][1];
-		if (!chk_color(board, current)) {
-			add_move(moves, pawn_pos, current);
+		new_move = pawn_pos;
+		new_move.file += deltas[0][0];
+		new_move.rank += deltas[0][1];
+		if (!chk_color(board, new_move)) {
+			add_move(board, moves, pawn_pos, new_move);
 
-			current = pawn_pos;
+			new_move = pawn_pos;
 			if (pawn_pos.rank == '2') {
-				current.file += deltas[1][0];
-				current.rank += deltas[1][1];
-				if (!chk_color(board, current)) {
-					add_move(moves, pawn_pos, current);
+				new_move.file += deltas[1][0];
+				new_move.rank += deltas[1][1];
+				if (!chk_color(board, new_move)) {
+					add_move(board, moves, pawn_pos, new_move);
 				}
 			}
 		}
-		current = pawn_pos;
-		current.file += deltas[2][0];
-		current.rank += deltas[2][1];
-		if (chk_color(board, current) == opp) {
-			add_move(moves, pawn_pos, current);
+		new_move = pawn_pos;
+		new_move.file += deltas[2][0];
+		new_move.rank += deltas[2][1];
+		if (chk_color(board, new_move) == opp) {
+			add_move(board, moves, pawn_pos, new_move);
 		}
-		current = pawn_pos;
-		current.file += deltas[3][0];
-		current.rank += deltas[3][1];
-		if (chk_color(board, current) == opp) {
-			add_move(moves, pawn_pos, current);
+		new_move = pawn_pos;
+		new_move.file += deltas[3][0];
+		new_move.rank += deltas[3][1];
+		if (chk_color(board, new_move) == opp) {
+			add_move(board, moves, pawn_pos, new_move);
 		}
 	} else {
-		current = pawn_pos;
-		current.file -= deltas[0][0];
-		current.rank -= deltas[0][1];
-		if (!chk_color(board, current)) {
-			add_move(moves, pawn_pos, current);
+		new_move = pawn_pos;
+		new_move.file -= deltas[0][0];
+		new_move.rank -= deltas[0][1];
+		if (!chk_color(board, new_move)) {
+			add_move(board, moves, pawn_pos, new_move);
 
-			current = pawn_pos;
+			new_move = pawn_pos;
 			if (pawn_pos.rank == '7') {
-				current.file -= deltas[1][0];
-				current.rank -= deltas[1][1];
-				if (!chk_color(board, current)) {
-					add_move(moves, pawn_pos, current);
+				new_move.file -= deltas[1][0];
+				new_move.rank -= deltas[1][1];
+				if (!chk_color(board, new_move)) {
+					add_move(board, moves, pawn_pos, new_move);
 				}
 			}
 		}
-		current = pawn_pos;
-		current.file -= deltas[2][0];
-		current.rank -= deltas[2][1];
-		if (chk_color(board, current) == opp) {
-			add_move(moves, pawn_pos, current);
+		new_move = pawn_pos;
+		new_move.file -= deltas[2][0];
+		new_move.rank -= deltas[2][1];
+		if (chk_color(board, new_move) == opp) {
+			add_move(board, moves, pawn_pos, new_move);
 		}
-		current = pawn_pos;
-		current.file -= deltas[3][0];
-		current.rank -= deltas[3][1];
-		if (chk_color(board, current) == opp) {
-			add_move(moves, pawn_pos, current);
+		new_move = pawn_pos;
+		new_move.file -= deltas[3][0];
+		new_move.rank -= deltas[3][1];
+		if (chk_color(board, new_move) == opp) {
+			add_move(board, moves, pawn_pos, new_move);
 		}
 	}
 }
@@ -255,6 +264,24 @@ void pawn_moves(struct board * board, struct moves * moves, struct coordinate pa
 void knight_moves(struct board * board, struct moves * moves, struct coordinate knight_pos) {
 	SET_COLS(knight_pos)
 
+	char deltas[8][2] = {
+		{-2,-1},
+		{-2,1},
+		{-1,2},
+		{-1,-2},
+		{1,-2},
+		{1,2},
+		{2,-1},
+		{2,1}
+	};
+	struct coordinate new_move;
+	for (int i = 0; i < 8; i++) {
+		new_move = knight_pos;
+		new_move.file += deltas[i][0];
+		new_move.rank += deltas[i][1];
+
+		add_move(board, moves, knight_pos, new_move);
+	}
 }
 
 int generate_moves(struct board * board, struct moves * moves, char color) {
@@ -268,19 +295,55 @@ int generate_moves(struct board * board, struct moves * moves, char color) {
 			king = BKING;
 			break;
 	}
-
 	// search for king position, simultaneously calculate all moves
 	struct coordinate current;
 	char opp = opp_color(color);
 	for (current.file = 'a'; current.file <= 'h'; current.file++) {
 		for (current.rank = '1'; current.rank <= '8'; current.rank++) {
+			// printf("Checking square %c%c\n", CHARGS(current));
 			if (BOARD(current) == king) {
 				king_pos = current;
-			} else if (chk_color(board, current) != 0) {
+			}
+			if (chk_color(board, current) != 0) {
 				attacks(board, moves, current);
 			}
 		}
 	}
 
 	return get_moves_count(board, moves, king_pos, opp);
+}
+
+int validate_move(struct board * board, char * move) {
+	struct board saved = *board;
+	struct moves * moves = init_moves();
+	struct coordinate origin;
+	origin.file = move[1];
+	origin.rank = move[2];
+	struct coordinate destination;
+	destination.file = move[3];
+	destination.rank = move[4];
+
+	if (!on_board(origin) || !on_board(destination)) {
+		return 1;
+	}
+
+	char own_color = chk_color(board, origin);
+	generate_moves(board, moves, own_color);
+	if (find_move(moves, origin, destination)) {
+		// attempt to make move
+		BOARD(destination) = BOARD(origin);
+		BOARD(origin) = 0;
+
+		free(moves);
+		moves = init_moves();
+		if (generate_moves(board, moves, own_color)) {
+			free(moves);
+			*board = saved;
+			return 0;
+		}
+		free(moves);
+		return 1;
+	} else {
+		return 0;
+	}
 }

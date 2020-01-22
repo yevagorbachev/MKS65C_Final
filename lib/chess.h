@@ -45,7 +45,8 @@ For an input move, determine legality (king in check after)
 
 struct moves * init_moves();
 struct coordinate coord(char * coord);
-void add_move(struct moves * moves, struct coordinate origin, struct coordinate destination);
+void add_move(struct board * board, struct moves * moves, struct coordinate origin, struct coordinate destination);
+int find_move(struct moves * moves, struct coordinate origin, struct coordinate destination);
 char chk_color(struct board * board, struct coordinate pos);
 char on_board(struct coordinate pos);
 int get_moves_count(struct board * board, struct moves * moves, struct coordinate destination, char color);
@@ -72,3 +73,5 @@ void king_moves (struct board * board, struct moves * moves, struct coordinate o
 void knight_moves(struct board * board, struct moves * moves, struct coordinate origin);
 void pawn_moves (struct board * board, struct moves * moves, struct coordinate origin);
 int generate_moves (struct board * board, struct moves * moves, char color);
+int validate_move(struct board * board, char * move);
+void make_move(struct board * board, char * move);
