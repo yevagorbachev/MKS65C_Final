@@ -74,4 +74,3 @@ void knight_moves(struct board * board, struct moves * moves, struct coordinate 
 void pawn_moves (struct board * board, struct moves * moves, struct coordinate origin);
 int generate_moves (struct board * board, struct moves * moves, char color);
 int validate_move(struct board * board, char * move);
-void make_move(struct board * board, char * move);
