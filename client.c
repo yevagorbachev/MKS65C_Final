@@ -1,5 +1,5 @@
 #include "lib/comms.h"
-#include "lib/game.h"
+#include "lib/chess.h"
 
 
 int game_connect(char mode, char * channel) {

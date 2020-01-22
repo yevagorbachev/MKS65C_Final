@@ -1,4 +1,4 @@
-#include "game.h"
+#include "chess.h"
 
 void move(struct board * game, char player) {
     // print board, prompt move

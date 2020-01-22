@@ -313,6 +313,15 @@ int generate_moves(struct board * board, struct moves * moves, char color) {
 	return get_moves_count(board, moves, king_pos, opp);
 }
 
+/* validate_move
+arguments:
+board: pointer to the struct board representing the game state.
+move: pointer to a 5-character string of the form
+	"{piece letter}{origin file}{origin rank}{destination file}{destination rank}"
+NOTE: This formatting is not validated by the function, and must be done before use.
+side effects: mutates board (makes the specified move) if the move is found to be valid
+return value: good juju -> 1, bad juju -> 0
+*/
 int validate_move(struct board * board, char * move) {
 	struct board saved = *board;
 	struct moves * moves = init_moves();
