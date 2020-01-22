@@ -14,6 +14,7 @@ void move(struct board * game, char player) {
             printf("%s is an illegal move\n", buffer);
         }
     }
+
     // while (validate_move(game,buffer)){
     //   printf("Invalid");
     //   printf("Move (%c): ", player);
@@ -124,7 +125,7 @@ void render_board(struct board * board) {
     for (current.rank = '8'; current.rank >= '1'; current.rank--) {
         printf("%c ", current.rank);
         for (current.file = 'a'; current.file <= 'h'; current.file++) {
-            if (piece = BOARD(current)) {
+            if ((piece = BOARD(current)) != 0) {
                 printf("|%c|", piece);
             } else {
                 printf("|_|");
