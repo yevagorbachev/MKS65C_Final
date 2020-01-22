@@ -3,12 +3,13 @@
 void move(struct board * game, char player) {
     // print board, prompt move
     render_board(game);
-    char buffer[3] = "\0\0";;
-    while (!validate_move(game,buffer)){
+    char buffer[10] = "\0";
+    while (validate_move(game,buffer)){
+      printf("Invalid");
       printf("Move (%c): ", player);
-      fgets(buffer, 3, stdin);
+      fgets(buffer, 10, stdin);
     }
-
+    printf("Valid");
     switch(player) {
         case WHITE:
             game->state[buffer[0] - 'a'][buffer[1] - '1'] = 'm';
