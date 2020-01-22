@@ -4,22 +4,32 @@ void move(struct board * game, char player) {
     // print board, prompt move
     render_board(game);
     char buffer[10] = "\0";
-    while (validate_move(game,buffer)){
-      printf("Invalid");
-      printf("Move (%c): ", player);
-      fgets(buffer, 10, stdin);
-    }
-    printf("Valid");
-    switch(player) {
-        case WHITE:
-            game->state[buffer[0] - 'a'][buffer[1] - '1'] = 'm';
-            // printf("server end1\n");
+    while (1) {
+        memset(buffer, 0, 10);
+        printf("Move (%c): ", player);
+        fgets(buffer, 10, stdin);
+        if (validate_move(game, buffer)) {
             break;
-        case BLACK: // black to move
-            game->state[buffer[0] - 'a'][buffer[1] - '1'] = 'M';
-            // printf("client end1\n");
-            break;
+        } else {
+            printf("%s is an illegal move\n", buffer);
+        }
     }
+    // while (validate_move(game,buffer)){
+    //   printf("Invalid");
+    //   printf("Move (%c): ", player);
+    //   fgets(buffer, 10, stdin);
+    // }
+    // printf("Valid");
+    // switch(player) {
+    //     case WHITE:
+    //         game->state[buffer[0] - 'a'][buffer[1] - '1'] = 'm';
+    //         // printf("server end1\n");
+    //         break;
+    //     case BLACK: // black to move
+    //         game->state[buffer[0] - 'a'][buffer[1] - '1'] = 'M';
+    //         // printf("client end1\n");
+    //         break;
+    // }
 }
 
 void run(int path, char color) {
